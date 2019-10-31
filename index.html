@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>FORM MASTERT</title>
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+<body>
+
+<div id="app">
+    <h4>VERY SMART VALIDATOR</h4>
+    <form @submit.prevent="submitForm" autocomplete="off">
+
+
+        <!--        name section -->
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input v-model="form.name"
+                   @blur="$v.form.name.$touch()"
+
+                   :class="{error:$v.form.name.$error, valid:!$v.form.name.$invalid}"
+                   id="name">
+
+            <div v-if="$v.form.name.$error">
+                <p v-if="!$v.form.name.required" class="error-message">The name field is required</p>
+                <p v-if="!$v.form.name.minLength" class="error-message">name can not be shorter than 5 letters</p>
+
+
+            </div>
+            <!--            <p>Invalid:{{$v.form.name.$invalid}} | Dirty:{{$v.form.name.$dirty}} | Error:{{$v.form.name.$error}}</p>-->
+
+        </div>
+
+        <!--        age section-->
+
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input v-model.number="form.age"
+                   @blur="$v.form.age.$touch()"
+                   :class="{error:$v.form.age.$error, valid:!$v.form.age.$invalid}"
+
+                   id="age">
+            <div v-if="$v.form.age.$error">
+                <p v-if="!$v.form.age.required " class="error-message">The agefield is required</p>
+                <p v-else-if="!$v.form.age.integer " class="error-message">The agefield is should
+                    be a number</p>
+                <p v-else-if="!$v.form.age.between " class="error-message">You should be at least
+                    12 and younger than 120 to continue</p>
+            </div>
+
+
+<!--            email section-->
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input v-model="form.email"
+                               @blur="$v.form.email.$touch()"
+                               :class="{error:$v.form.email.$error, valid:!$v.form.email.$invalid && form.email}"
+                               id="email" >
+
+
+                        <p v-if="!$v.form.email.email && $v.form.email.$error" class="error-message">Invalid email address</p>
+
+                    </div>
+
+
+            <!--        password-->
+            <!--  <div class="form-group">
+                  <label for="password">Password</label>
+                  <input v-model="form.password" id="password">
+                  <div v-if="$v.form.password.$error"></div>
+                  <p v-if="!$v.form.password.required" class="error-message">The password field is required</p>
+                  <p v-else-if="!$v.form.password.integer" class="error-message">The password  should be longer than 8 characters</p>
+              </div>-->
+
+            <!--confirm password-->
+            <!--   <div class="form-group">
+                   <label for="age">Confirm password:</label>
+                   <input v-model.number="form.age" id="age">
+                   <div v-if="$v.form.age.$error"></div>
+                   <p v-if="!$v.form.age.required" class="error-message">The agefield is required</p>
+                   <p v-else-if="!$v.form.age.integer" class="error-message">The agefield is should be a number</p>
+                   <p v-else-if="!$v.form.age.between" class="error-message">You should be at least 12 and younger than 120 to continue</p>
+               </div>
+       -->
+
+
+            <div>
+                <button>Submit</button>
+            </div>
+    </form>
+
+</div>
+<!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+
+
+<script src="vue.js"></script>
+
+<script src="complete/libs/vuelidate.min.js"></script>
+
+<script src="complete/libs/validators.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
+
+
+</body>
+</html>
