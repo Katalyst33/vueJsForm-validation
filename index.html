@@ -6,6 +6,11 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>FORM MASTERT</title>
+    <script src="vue.js"></script>
+
+    <script src="complete/libs/validators.min.js"></script>
+
+    <script src="complete/libs/vuelidate.min.js"></script>
     <link rel="stylesheet" href="style.css">
 
 
@@ -23,7 +28,7 @@
             <input v-model="form.name"
                    @blur="$v.form.name.$touch()"
 
-                   :class="{error:$v.form.name.$error, valid:!$v.form.name.$invalid}"
+                   :class="{error:shouldAppendErrorClass($v.form.name), valid:shouldAppendValidClass($v.form.name)}"
                    id="name">
 
             <div v-if="$v.form.name.$error">
@@ -42,15 +47,24 @@
             <label for="age">Age:</label>
             <input v-model.number="form.age"
                    @blur="$v.form.age.$touch()"
-                   :class="{error:$v.form.age.$error, valid:!$v.form.age.$invalid}"
+                   :class="{error:shouldAppendErrorClass($v.form.age), valid:shouldAppendValidClass($v.form.age)}"
 
                    id="age">
             <div v-if="$v.form.age.$error">
                 <p v-if="!$v.form.age.required " class="error-message">The agefield is required</p>
                 <p v-else-if="!$v.form.age.integer " class="error-message">The agefield is should
                     be a number</p>
-                <p v-else-if="!$v.form.age.between " class="error-message">You should be at least
+                <p v-else-if="!$v.form.age.oldEnoughAndAlive" class="error-message">You should be at least
                     12 and younger than 120 to continue</p>
+            </div>
+
+
+            <div class="form-group">
+                <label for="newsletter">Subscribe to the newsletter:</label>
+                <input v-model="form.newsletter"
+                       type="checkbox"
+                       id="newsletter"
+                >
             </div>
 
 
@@ -59,11 +73,12 @@
                         <label for="email">Email:</label>
                         <input v-model="form.email"
                                @blur="$v.form.email.$touch()"
-                               :class="{error:$v.form.email.$error, valid:!$v.form.email.$invalid && form.email}"
+                               :class="{error:shouldAppendErrorClass($v.form.email), valid:shouldAppendValidClass($v.form.email)}"
                                id="email" >
 
 
                         <p v-if="!$v.form.email.email && $v.form.email.$error" class="error-message">Invalid email address</p>
+                        <p v-if="!$v.form.email.required && $v.form.email.$error" class="error-message">Email is required so we can send you the newsletter</p>
 
                     </div>
 
@@ -88,6 +103,31 @@
                </div>
        -->
 
+            <div class="form-group github-username">
+                <label for="github-username">GitHub username:</label>
+                <input v-model.lazy="$v.form.githubUsername.$model"
+                       :class="{error: shouldAppendErrorClass($v.form.githubUsername), valid: shouldAppendValidClass($v.form.githubUsername)}"
+                       id="github-username"
+                >
+                <span v-show="$v.form.githubUsername.$pending" class="fa fa-spinner fa-spin"></span>
+                <p v-if="!$v.form.githubUsername.exists && $v.form.githubUsername.$error" class="error-message">There is not GitHub user with this username</p>
+            </div>
+
+
+
+<!--            food section-->
+            <div class="form-group">
+                <label for="food">Pizza or Burger:</label>
+                <input v-model="form.food"
+                       @blur="$v.form.food.$touch()"
+                       :class="{error:shouldAppendErrorClass($v.form.food), valid:shouldAppendValidClass($v.form.food)}"
+                       id="food" >
+
+
+                <p v-if="$v.form.food.$error && !$v.form.food.pizzaOrBurger" class="error-message">Sorry ! we only serve pizzas and burgers</p>
+
+            </div>
+
 
             <div>
                 <button>Submit</button>
@@ -98,12 +138,11 @@
 <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
 
 
-<script src="vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
 
-<script src="complete/libs/vuelidate.min.js"></script>
 
-<script src="complete/libs/validators.min.js"></script>
 <script type="text/javascript" src="app.js"></script>
+
 
 
 </body>
